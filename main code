@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ospa Marketing Performance Dashboard - June</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .metric-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .kpi-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        .kpi-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+        }
+        .kpi-label svg {
+            margin-right: 0.5rem;
+        }
+        .change-positive {
+            color: #16a34a;
+        }
+        .change-negative {
+            color: #dc2626;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .section-title svg {
+            margin-right: 0.75rem;
+            color: #4f46e5;
+        }
+        .insight-list li, .optimization-list li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .insight-list li::before, .optimization-list li::before {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            content: '';
+            width: 1.25rem;
+            height: 1.25rem;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        .insight-list li::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%234f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lightbulb"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 9 5c-2.3 0-4.4 1.2-5.5 3L2 9.5"/><path d="M9 18c-3.3 0-6-2.7-6-6"/><path d="M14 22s1-2 1-3.5c0-.8-.5-1.5-1-2"/><path d="M9 14v1c0 2.8 2.2 5 5 5h1v-1c0-2.8-2.2-5-5-5Z"/></svg>');
+        }
+        .optimization-list li::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2316a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wrench"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>');
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Ospa Marketing Dashboard</h1>
+            <p class="text-gray-500 mt-1">Monthly Performance Report: June 1st - 30th</p>
+        </header>
+
+        <!-- Key Leads Summary -->
+        <div class="mb-8">
+            <h2 class="section-title">
+                <i data-lucide="target"></i>
+                Lead Generation Summary
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="metric-card text-center col-span-1 md:col-span-2 lg:col-span-1">
+                    <div class="kpi-label justify-center"><i data-lucide="users" class="w-5 h-5"></i><span>Total New Leads</span></div>
+                    <p class="kpi-value">3</p>
+                    <p class="text-gray-500 text-sm mt-2">from all marketing channels</p>
+                </div>
+                <div class="metric-card col-span-1 md:col-span-2 lg:col-span-3">
+                     <h3 class="font-semibold text-lg text-gray-700 mb-3 flex items-center"><i data-lucide="list-tree" class="w-5 h-5 mr-2"></i>Lead Sources</h3>
+                     <div class="flex flex-col md:flex-row justify-around space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="text-center p-4 bg-indigo-50 rounded-lg">
+                            <p class="font-bold text-indigo-600 text-xl">DMG Service Group</p>
+                            <p class="text-sm text-indigo-500">Source: Google Ads</p>
+                        </div>
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <p class="font-bold text-green-600 text-xl">Mech Tech Prof</p>
+                            <p class="text-sm text-green-500">Source: Website</p>
+                        </div>
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <p class="font-bold text-blue-600 text-xl">Ross & Ross Holdings</p>
+                            <p class="text-sm text-blue-500">Source: Loopnet</p>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Website & Content Performance -->
+        <section class="mb-8">
+            <h2 class="section-title">
+                <i data-lucide="monitor-smartphone"></i>
+                Website & Content Performance
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="users"></i><span>Overall Sessions</span></div>
+                    <p class="kpi-value">877</p>
+                </div>
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="file-text"></i><span>Blog Views</span></div>
+                    <p class="kpi-value">68</p>
+                    <p class="text-sm font-medium change-positive">+79% vs May</p>
+                </div>
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="clock"></i><span>Avg. Time on Site</span></div>
+                    <p class="kpi-value">9m 24s</p>
+                    <p class="text-sm font-medium change-positive">Up from 8m 20s</p>
+                </div>
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="arrow-right-left"></i><span>Bounce Rate</span></div>
+                    <p class="kpi-value">38%</p>
+                     <p class="text-sm font-medium change-positive">Healthy & Low</p>
+                </div>
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="copy"></i><span>Pages per Session</span></div>
+                    <p class="kpi-value">4.1</p>
+                    <p class="text-sm font-medium change-positive">Up from 3.3</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-gray-700 mb-3">Key Insights</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm insight-list">
+                        <li>Visitor engagement is excellent. People are spending more time on the site and viewing more pages, which means they find the content valuable.</li>
+                        <li>The 79% jump in blog views is a huge win, showing that new content is attracting interest.</li>
+                        <li>The low bounce rate (38%) confirms that the website is relevant to the visitors arriving there.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-gray-700 mb-3">Optimization Suggestions</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm optimization-list">
+                        <li>Promote the top-performing pages (Strathclyde & Hamilton Business Parks) more heavily across social media and email to drive even more traffic.</li>
+                        <li>Add "Call to Action" buttons (like 'Book a Tour' or 'Learn More') within popular blog posts to convert readers into leads.</li>
+                        <li>Analyze the journey of users who visit the most pages to understand what content path is most effective at keeping them engaged.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google Ads Performance -->
+        <section class="mb-8">
+            <h2 class="section-title">
+                <i data-lucide="gem"></i>
+                Google Ads Performance
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="eye"></i><span>Impressions</span></div>
+                    <p class="kpi-value">9,720</p>
+                    <p class="text-sm font-medium change-positive">+5%</p>
+                </div>
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="mouse-pointer-click"></i><span>Clicks</span></div>
+                    <p class="kpi-value">321</p>
+                    <p class="text-sm font-medium change-positive">+6%</p>
+                </div>
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="percent"></i><span>Click-Through Rate</span></div>
+                    <p class="kpi-value">3.3%</p>
+                    <p class="text-sm font-medium change-positive">+1%</p>
+                </div>
+                <div class="metric-card">
+                    <div class="kpi-label"><i data-lucide="coins"></i><span>Cost per Click (CPC)</span></div>
+                    <p class="kpi-value">£2.72</p>
+                    <p class="text-sm font-medium change-positive">-8% (Cheaper)</p>
+                </div>
+            </div>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-gray-700 mb-3">Key Insights</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm insight-list">
+                        <li>The account restructure is showing positive early signs: more people are seeing and clicking the ads, and each click is cheaper.</li>
+                        <li>The new dedicated 'Book a Tour' landing page is a great strategic move for capturing high-intent visitors from paid ads.</li>
+                        <li>While traffic is increasing efficiently, the primary goal is to ensure this traffic converts into leads.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-gray-700 mb-3">Optimization Suggestions</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm optimization-list">
+                        <li>Continue refining the 'Book a Tour' page. Test different headlines, images, or form layouts to make it more persuasive and increase conversions.</li>
+                        <li>Review the keywords that are spending the most money. Pause any that aren't relevant to people looking for office space to rent.</li>
+                        <li>Implement "negative keywords" (e.g., 'jobs', 'free', 'reviews') to stop ads from showing to people with the wrong intent, saving money.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Media Performance -->
+        <section class="mb-8">
+            <h2 class="section-title">
+                <i data-lucide="linkedin"></i>
+                Social Media Performance (LinkedIn)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Paid Social -->
+                <div>
+                    <h3 class="font-semibold text-xl text-gray-700 mb-4">Paid Campaigns</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div class="metric-card">
+                            <div class="kpi-label"><i data-lucide="eye"></i><span>Impressions</span></div>
+                            <p class="kpi-value">9,277</p>
+                        </div>
+                        <div class="metric-card">
+                            <div class="kpi-label"><i data-lucide="mouse-pointer-click"></i><span>Clicks</span></div>
+                            <p class="kpi-value">28</p>
+                        </div>
+                        <div class="metric-card col-span-1 sm:col-span-2">
+                            <div class="kpi-label"><i data-lucide="percent"></i><span>Click-Through Rate (CTR)</span></div>
+                            <div class="flex justify-around items-center mt-2">
+                                <div class="text-center">
+                                    <p class="text-lg font-bold text-gray-700">0.54%</p>
+                                    <p class="text-xs text-gray-500">Retargeting</p>
+                                    <p class="text-xs font-semibold change-positive">(Above Avg.)</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-lg font-bold text-gray-700">0.13%</p>
+                                    <p class="text-xs text-gray-500">Awareness</p>
+                                    <p class="text-xs font-semibold change-negative">(Below Avg.)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Organic Social -->
+                <div>
+                    <h3 class="font-semibold text-xl text-gray-700 mb-4">Organic Profile</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div class="metric-card">
+                            <div class="kpi-label"><i data-lucide="users"></i><span>Followers</span></div>
+                            <p class="kpi-value">236</p>
+                            <p class="text-sm font-medium change-positive">+8 this month</p>
+                        </div>
+                        <div class="metric-card">
+                            <div class="kpi-label"><i data-lucide="thumbs-up"></i><span>Engagement Rate</span></div>
+                            <p class="kpi-value">7.7%</p>
+                            <p class="text-sm font-medium change-positive">Very High</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-gray-700 mb-3">Key Insights</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm insight-list">
+                        <li>Retargeting is working well. People who already visited the website are much more likely to click the ads (0.54% CTR is above average).</li>
+                        <li>The general "awareness" campaign is not very effective at getting clicks, which is common for this type of campaign. Its main goal was to build an audience.</li>
+                        <li>Your organic (non-paid) posts are performing exceptionally well, with a very high engagement rate of 7.7%. Your followers are clearly interested in your content.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-gray-700 mb-3">Optimization Suggestions</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm optimization-list">
+                        <li>Allocate more budget to the successful retargeting campaign, as it's reaching an engaged audience.</li>
+                        <li>Analyze the content of your high-engagement organic posts. Use similar topics, images, and language in your paid ads to improve their performance.</li>
+                        <li>Continue posting valuable content organically to keep growing your followers and maintaining that high engagement.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Email Performance -->
+        <section class="mb-8">
+            <h2 class="section-title">
+                <i data-lucide="mail"></i>
+                Email Performance
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="metric-card col-span-1 md:col-span-2">
+                    <canvas id="emailChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-gray-700 mb-3">Key Insights</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm insight-list">
+                        <li>All email campaigns are performing incredibly well, with Open Rates and Click-Through Rates (CTR) far exceeding industry averages.</li>
+                        <li>The SBP Survey was the standout performer, with the highest engagement. This shows your audience is willing to interact directly.</li>
+                        <li>Unsubscribe rates are low, which means the content is relevant and not seen as spam.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-semibold text-lg text-gray-700 mb-3">Optimization Suggestions</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm optimization-list">
+                        <li>Since the survey was so successful, consider sending short, engaging polls or surveys more regularly to keep the audience involved.</li>
+                        <li>Use the email newsletters to promote your best-performing blog posts and website pages to drive traffic back to the site.</li>
+                        <li>Segment your email list based on who clicked what. For example, people who clicked on Strathclyde Park content could receive more targeted emails about that location.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const ctx = document.getElementById('emailChart').getContext('2d');
+        const emailChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Ospa Newsletter', 'SBP Newsletter', 'SBP Survey'],
+                datasets: [{
+                    label: 'Open Rate (%)',
+                    data: [51, 49, 53],
+                    backgroundColor: 'rgba(79, 70, 229, 0.6)', // Indigo
+                    borderColor: 'rgba(79, 70, 229, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Click-Through Rate (%)',
+                    data: [36, 32, 44],
+                    backgroundColor: 'rgba(22, 163, 74, 0.6)', // Green
+                    borderColor: 'rgba(22, 163, 74, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Percentage (%)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Email Campaign Engagement Comparison',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
